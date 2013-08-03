@@ -26,6 +26,12 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
+        private bool isValidFilename(String filename)
+        {
+            char[] invalidFileChars = Path.GetInvalidFileNameChars();
+            return (filename.IndexOfAny(invalidFileChars) < 0);
+        }
+
         private List<Musique> parsePage(String url)
         {
             List<Musique> mu = new List<Musique>();
@@ -55,6 +61,10 @@ namespace WindowsFormsApplication1
             {
                 Musique m = new Musique();
                 m.title = titles.ElementAt(i);
+                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                {
+                    m.title = m.title.Replace(c, '_');
+                }
                 m.url = urls.ElementAt(i);
                 mu.Add(m);
             }
